@@ -33,6 +33,7 @@ declare global {
       clearPartitionData: (partition: string) => Promise<boolean>
       openSellerWindow: (partition: string, url: string) => void
       checkForUpdate: () => Promise<{ success: boolean; data?: any; error?: string }>
+      setLanguage: (lang: 'vi' | 'en') => Promise<boolean>
     }
   }
 }

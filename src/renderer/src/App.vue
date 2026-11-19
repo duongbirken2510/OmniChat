@@ -5,10 +5,13 @@ import { PLATFORMS } from './types'
 import { db, getSetting, setSetting } from './database/db'
 import type { DbQuickReply } from './database/db'
 import { useNotifications } from './composables/useNotifications'
+import { useI18n } from './i18n'
 import AccountSidebar from './components/AccountSidebar.vue'
 import SettingsModal from './components/SettingsModal.vue'
 import MigrationBanner from './components/MigrationBanner.vue'
 import AutoUpdateBanner from './components/AutoUpdateBanner.vue'
+
+const { t, initLocale } = useI18n()
 
 // ===== STATE =====
 const activeTab = ref<string>('1')
@@ -51,6 +54,7 @@ const { playNotificationSound, requestPermission, watchUnreadChanges } = useNoti
 
 // ===== LIFECYCLE =====
 onMounted(async () => {
+  await initLocale()
   requestPermission()
 
   // Load settings
@@ -98,7 +102,7 @@ onMounted(async () => {
       if (!snippetRestored) {
         const defaultSnippet = {
           shortcut: 'xinchao',
-          content: 'Đây là nội dung tin nhắn mẫu. Tin nhắn sẽ được đính kèm tối đa 6 hình ảnh. Khi gửi phần text sẽ gửi trước và hình ảnh gửi sau.',
+          content: t.value.main.defaultSnippetContent,
           imagePaths: [] as string[],
           createdAt: Date.now()
         }
@@ -344,7 +348,7 @@ const syncSnippetsToWebviews = () => {
 const handleAddSnippet = async (shortcut: string, content: string, base64Images?: string[]) => {
   // Validate trùng shortcut
   if (snippets.value.some(s => s.shortcut.toLowerCase() === shortcut.toLowerCase())) {
-    alert(`Phím tắt "\\${shortcut}" đã tồn tại. Vui lòng chọn phím tắt khác.`)
+    alert(t.value.main.duplicateShortcut(shortcut))
     return
   }
 
@@ -365,7 +369,7 @@ const handleAddSnippet = async (shortcut: string, content: string, base64Images?
 const handleUpdateSnippet = async (id: number, shortcut: string, content: string, formImages?: string[]) => {
   // Validate trùng shortcut (trừ chính nó)
   if (snippets.value.some(s => s.id !== id && s.shortcut.toLowerCase() === shortcut.toLowerCase())) {
-    alert(`Phím tắt "\\${shortcut}" đã tồn tại. Vui lòng chọn phím tắt khác.`)
+    alert(t.value.main.duplicateShortcut(shortcut))
     return
   }
 
@@ -448,7 +452,7 @@ const handleIpcMessage = (event: any, acc: Account) => {
     if (notificationEnabled.value && Notification.permission === 'granted') {
       const icon = payload.data.icon || acc.zaloAvatarUrl || acc.avatarBase64 || ''
       new Notification(acc.zaloDisplayName || acc.name, {
-        body: payload.data.body || payload.data.title || 'Tin nhan moi!',
+        body: payload.data.body || payload.data.title || t.value.main.newMessageFallback,
         icon: icon
       })
     }
@@ -564,32 +568,32 @@ const handleCheckForUpdate = () => {
         <button
           v-if="['shopee', 'tiktok', 'messenger'].includes(accounts.find(a => a.id === activeTab)?.platform || '')"
           @click="isSellerMode[activeTab] = !isSellerMode[activeTab]"
-          class="absolute top-2 left-1/2 -translate-x-[calc(50%+1.5rem)] z-20 px-3 h-9 rounded-full bg-blue-600/90 hover:bg-blue-600 text-white flex items-center gap-1.5 justify-center transition-all shadow-md backdrop-blur-sm shadow-blue-500/20 hover:scale-105"
-          :title="isSellerMode[activeTab] ? 'Quay lại Chat' : (accounts.find(a => a.id === activeTab)?.platform === 'messenger' ? 'Mở Facebook' : 'Mở Kênh Người Bán')"
+          class="absolute top-2 left-1/2 -translate-x-[calc(50%+1.5rem)] z-20 px-3 h-9 rounded-full bg-blue-600/90 hover:bg-blue-600 text-white flex items-center gap-1.5 justify-center transition-all shadow-md shadow-blue-500/20 hover:scale-105 whitespace-nowrap"
+          :title="isSellerMode[activeTab] ? t.main.backToChat : (accounts.find(a => a.id === activeTab)?.platform === 'messenger' ? t.main.openFacebook : t.main.openSellerCenter)"
         >
           <!-- Giao diện nút lúc ở bên Chat -->
           <template v-if="!isSellerMode[activeTab]">
             <template v-if="accounts.find(a => a.id === activeTab)?.platform === 'messenger'">
               <!-- Facebook Icon -->
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
-              <span class="text-xs font-bold">Facebook</span>
+              <span class="text-xs font-bold">{{ t.main.facebookShort }}</span>
             </template>
             <template v-else>
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-              <span class="text-xs font-bold">Kênh Bán</span>
+              <span class="text-xs font-bold">{{ t.main.sellerCenterShort }}</span>
             </template>
           </template>
           <!-- Giao diện lúc ở bên kia (mời quay lại Chat) -->
           <template v-else>
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-            <span class="text-xs font-bold">Về Chat</span>
+            <span class="text-xs font-bold">{{ t.main.backToChatShort }}</span>
           </template>
         </button>
         <!-- Floating Refresh Button -->
         <button
           @click="handleRefreshWebview"
-          class="absolute top-2 left-1/2 translate-x-[calc(-50%+3.5rem)] z-20 w-9 h-9 rounded-full bg-black/20 hover:bg-black/50 text-white flex items-center justify-center transition-all opacity-40 hover:opacity-100 backdrop-blur-sm"
-          title="Tải lại trang (Refresh)"
+          class="absolute top-2 left-1/2 translate-x-[calc(-50%+3.5rem)] z-20 w-9 h-9 rounded-full bg-black/20 hover:bg-black/50 text-white flex items-center justify-center transition-all opacity-40 hover:opacity-100"
+          :title="t.main.refreshTooltip"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="23 4 23 10 17 10"></polyline>

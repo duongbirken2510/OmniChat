@@ -3,6 +3,9 @@ import { computed } from 'vue'
 import type { Account, Platform } from '../types'
 import { PLATFORMS } from '../types'
 import { getInitials } from '../utils'
+import { useI18n } from '../i18n'
+
+const { locale, t, toggleLocale } = useI18n()
 
 const props = defineProps<{
   visibleAccounts: Account[]
@@ -88,12 +91,19 @@ const groupedAccounts = computed(() => {
       </div>
     </template>
 
-    <!-- Settings Icon (biểu tượng lưới — khác biệt với cài đặt Zalo) -->
+    <!-- Bottom Controls: Language Toggle + Settings + Quit -->
     <div class="mt-auto flex flex-col items-center gap-1.5 pb-1">
-      <button @click="emit('openSettings')" class="w-11 h-11 rounded-xl hover:bg-zalo-bg-sidebar-icon flex items-center justify-center text-white/80 hover:text-white focus:outline-none transition" title="Quản lý tài khoản">
+      <button
+        @click="toggleLocale()"
+        class="w-11 h-9 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white text-xs font-extrabold tracking-wider focus:outline-none transition select-none border border-white/15"
+        :title="t.sidebar.switchLangTooltip"
+      >
+        {{ locale === 'vi' ? 'VI' : 'EN' }}
+      </button>
+      <button @click="emit('openSettings')" class="w-11 h-11 rounded-xl hover:bg-zalo-bg-sidebar-icon flex items-center justify-center text-white/80 hover:text-white focus:outline-none transition" :title="t.sidebar.settingsTooltip">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
       </button>
-      <button @click="emit('quitApp')" class="w-11 h-11 rounded-xl hover:bg-red-500/30 flex items-center justify-center text-white/50 hover:text-red-300 focus:outline-none transition" title="Thoát ứng dụng">
+      <button @click="emit('quitApp')" class="w-11 h-11 rounded-xl hover:bg-red-500/30 flex items-center justify-center text-white/50 hover:text-red-300 focus:outline-none transition" :title="t.sidebar.quitTooltip">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
       </button>
     </div>

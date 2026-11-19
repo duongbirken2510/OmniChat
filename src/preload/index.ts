@@ -57,7 +57,11 @@ const api = {
   
   // ===== Kiểm tra cập nhật =====
   checkForUpdate: (): Promise<{ success: boolean; data?: any; error?: string }> =>
-    ipcRenderer.invoke('check-for-update')
+    ipcRenderer.invoke('check-for-update'),
+
+  // ===== Ngôn ngữ (VI/EN) =====
+  setLanguage: (lang: 'vi' | 'en'): Promise<boolean> =>
+    ipcRenderer.invoke('set-language', lang)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

@@ -4,6 +4,9 @@ import type { Account, Platform } from '../types'
 import { PLATFORMS } from '../types'
 import { getInitials } from '../utils'
 import type { DbQuickReply } from '../database/db'
+import { useI18n } from '../i18n'
+
+const { locale, t, setLocale } = useI18n()
 
 const props = defineProps<{
   show: boolean
@@ -54,7 +57,7 @@ const handleFanpageClick = () => {
   const fbAccs = props.accounts.filter(a => a.platform === 'messenger')
   if (fbAccs.length === 0) {
     // Không có Messenger nào → cho tạo Fanpage độc lập
-    const choice = confirm('Bạn chưa có tài khoản Messenger nào.\n\n• Bấm OK để tạo Fanpage độc lập (phải đăng nhập Facebook riêng).\n• Bấm Hủy để thêm Messenger trước.')
+    const choice = confirm(t.value.settings.accounts.confirmStandaloneFanpage)
     if (choice) {
       emit('addAccount', 'fanpage')
     }
@@ -70,7 +73,7 @@ const selectFanpageLink = (accId: string) => {
 }
 
 const handleDeleteAccount = (acc: Account) => {
-  const confirmMsg = `Bạn có chắc muốn XÓA tài khoản "${acc.name}"?\n\nHành động này sẽ xóa toàn bộ dữ liệu đăng nhập, cache và ảnh của tài khoản này. Không thể hoàn tác!`
+  const confirmMsg = t.value.settings.accounts.confirmDelete(acc.name)
   if (confirm(confirmMsg)) {
     emit('deleteAccount', acc.id)
   }
@@ -220,7 +223,7 @@ const handleSnippetImageUpload = async (event: Event) => {
   if (!input.files || input.files.length === 0) return
   
   if (snippetForm.value.images.length + input.files.length > 6) {
-     alert("Chỉ được lưu tối đa 6 ảnh cho mỗi mẫu tin nhắn.")
+     alert(t.value.settings.snippets.maxImagesAlert)
      return
   }
 
@@ -254,42 +257,61 @@ const handleRemoveSnippetImage = (index: number) => {
 
       <!-- Header -->
       <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-        <h2 class="text-xl font-bold text-gray-800">Cài đặt OmniChat</h2>
-        <button @click="emit('close')" class="text-gray-400 hover:text-gray-600 focus:outline-none bg-transparent" title="Đóng">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
+        <h2 class="text-xl font-bold text-gray-800">{{ t.settings.title }}</h2>
+        <div class="flex items-center gap-3">
+          <!-- Quick Language Switcher Pill -->
+          <div class="inline-flex items-center bg-gray-200/80 p-0.5 rounded-lg text-xs font-bold select-none">
+            <button
+              @click="setLocale('vi')"
+              class="px-2.5 py-1 rounded-md transition whitespace-nowrap"
+              :class="locale === 'vi' ? 'bg-white text-zalo-primary shadow-sm' : 'text-gray-500 hover:text-gray-700'"
+            >
+              🇻🇳 VI
+            </button>
+            <button
+              @click="setLocale('en')"
+              class="px-2.5 py-1 rounded-md transition whitespace-nowrap"
+              :class="locale === 'en' ? 'bg-white text-zalo-primary shadow-sm' : 'text-gray-500 hover:text-gray-700'"
+            >
+              🇬🇧 EN
+            </button>
+          </div>
+          <button @click="emit('close')" class="text-gray-400 hover:text-gray-600 focus:outline-none bg-transparent" :title="t.settings.close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
       </div>
 
       <!-- Tab Navigation -->
       <div class="flex border-b border-gray-200 px-6 bg-white">
         <button
-          class="px-4 py-3 text-sm font-semibold transition border-b-2"
+          class="px-4 py-3 text-sm font-semibold transition border-b-2 whitespace-nowrap"
           :class="activeSection === 'accounts' ? 'border-zalo-primary text-zalo-primary' : 'border-transparent text-gray-500 hover:text-gray-700'"
           @click="activeSection = 'accounts'"
         >
           <span class="flex items-center gap-1.5">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            Tài Khoản
+            {{ t.settings.tabs.accounts }}
           </span>
         </button>
         <button
-          class="px-4 py-3 text-sm font-semibold transition border-b-2"
+          class="px-4 py-3 text-sm font-semibold transition border-b-2 whitespace-nowrap"
           :class="activeSection === 'system' ? 'border-zalo-primary text-zalo-primary' : 'border-transparent text-gray-500 hover:text-gray-700'"
           @click="activeSection = 'system'"
         >
           <span class="flex items-center gap-1.5">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-            Hệ thống
+            {{ t.settings.tabs.system }}
           </span>
         </button>
         <button
-          class="px-4 py-3 text-sm font-semibold transition border-b-2"
+          class="px-4 py-3 text-sm font-semibold transition border-b-2 whitespace-nowrap"
           :class="activeSection === 'snippets' ? 'border-zalo-primary text-zalo-primary' : 'border-transparent text-gray-500 hover:text-gray-700'"
           @click="activeSection = 'snippets'"
         >
           <span class="flex items-center gap-1.5">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-            Tin nhắn mẫu
+            {{ t.settings.tabs.snippets }}
           </span>
         </button>
       </div>
@@ -322,7 +344,7 @@ const handleRemoveSnippetImage = (index: number) => {
                   <img v-if="acc.avatarBase64" :src="acc.avatarBase64" class="w-full h-full object-cover" />
                   <img v-else-if="acc.zaloAvatarUrl" :src="acc.zaloAvatarUrl" class="w-full h-full object-cover" referrerpolicy="no-referrer" />
                   <span v-else>{{ getInitials(acc.name) }}</span>
-                  <label class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition cursor-pointer" title="Upload Avatar">
+                  <label class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition cursor-pointer" :title="t.settings.accounts.uploadAvatar">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
                     <input type="file" accept="image/*" class="hidden" @change="(e: Event) => handleAvatarUpload(e, acc.id)" />
                   </label>
@@ -335,15 +357,15 @@ const handleRemoveSnippetImage = (index: number) => {
                     :value="acc.name"
                     @input="emit('updateName', acc.id, ($event.target as HTMLInputElement).value)"
                     class="font-semibold text-gray-800 text-sm bg-transparent border-b border-transparent hover:border-gray-300 focus:border-zalo-primary focus:outline-none py-0.5 w-full transition truncate"
-                    placeholder="Nhập tên gọi nhớ"
+                    :placeholder="t.settings.accounts.aliasPlaceholder"
                   />
                   <div class="text-[11px] text-gray-400 mt-0.5 flex items-center gap-1.5 flex-wrap">
                     <template v-if="acc.platform === 'fanpage' && acc.linkedToId">
                       <span class="text-green-600 font-semibold">🔗 {{ accounts.find(a => a.id === acc.linkedToId)?.name || 'Messenger' }}</span>
                     </template>
                     <span v-if="acc.zaloDisplayName" class="text-blue-500">{{ acc.zaloDisplayName }}</span>
-                    <span v-if="acc.zaloAvatarUrl" class="text-green-500">✓ Ảnh tự động</span>
-                    <span v-if="acc.unread > 0" class="text-red-500 font-bold">{{ acc.unread }} chưa đọc</span>
+                    <span v-if="acc.zaloAvatarUrl" class="text-green-500">{{ t.settings.accounts.autoAvatar }}</span>
+                    <span v-if="acc.unread > 0" class="text-red-500 font-bold">{{ t.settings.accounts.unreadCount(acc.unread) }}</span>
                   </div>
                 </div>
 
@@ -352,17 +374,17 @@ const handleRemoveSnippetImage = (index: number) => {
                   <button
                     v-if="acc.platform === 'shopee' || acc.platform === 'tiktok'"
                     @click="handleOpenSellerCenter(acc)"
-                    class="px-2 py-1.5 rounded-md text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 transition border border-blue-200 mr-2 flex items-center gap-1"
-                    title="Mở Kênh Người Bán trong cửa sổ mới (không cần đăng nhập lại)"
+                    class="px-2 py-1.5 rounded-md text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 transition border border-blue-200 mr-2 flex items-center gap-1 whitespace-nowrap"
+                    :title="t.settings.accounts.sellerBtnTooltip"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-                    Kênh Bán
+                    {{ t.settings.accounts.sellerBtn }}
                   </button>
                   <button
                     @click="emit('toggleVisibility', acc.id)"
                     class="p-1.5 rounded-md text-sm transition"
                     :class="acc.isHidden ? 'text-indigo-500 hover:bg-indigo-50' : 'text-orange-500 hover:bg-orange-50'"
-                    :title="acc.isHidden ? 'Bật lại' : 'Ẩn'"
+                    :title="acc.isHidden ? t.settings.accounts.showAccount : t.settings.accounts.hideAccount"
                   >
                     <svg v-if="acc.isHidden" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                     <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
@@ -370,7 +392,7 @@ const handleRemoveSnippetImage = (index: number) => {
                   <button
                     @click="handleDeleteAccount(acc)"
                     class="p-1.5 rounded-md text-red-400 hover:text-red-600 hover:bg-red-50 transition"
-                    title="Xóa tài khoản"
+                    :title="t.settings.accounts.deleteAccount"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                   </button>
@@ -413,8 +435,8 @@ const handleRemoveSnippetImage = (index: number) => {
 
           <!-- Popup chọn tài khoản Facebook để liên kết Fanpage -->
           <div v-if="showFanpagePicker" class="border-2 border-blue-200 rounded-lg p-4 bg-blue-50/50 mt-3">
-            <h4 class="font-bold text-blue-800 mb-2 text-sm">🔗 Chọn tài khoản Messenger để liên kết Fanpage:</h4>
-            <p class="text-xs text-gray-500 mb-3">Fanpage sẽ dùng chung phiên đăng nhập Facebook (không cần login lại)</p>
+            <h4 class="font-bold text-blue-800 mb-2 text-sm">{{ t.settings.accounts.fanpagePickerTitle }}</h4>
+            <p class="text-xs text-gray-500 mb-3">{{ t.settings.accounts.fanpagePickerDesc }}</p>
             <div class="space-y-2">
               <button
                 v-for="msgAcc in accounts.filter(a => a.platform === 'messenger')"
@@ -429,9 +451,9 @@ const handleRemoveSnippetImage = (index: number) => {
                 </div>
                 <div class="text-left flex-1">
                   <div class="font-semibold text-gray-800 text-sm">{{ msgAcc.name }}</div>
-                  <div class="text-[11px] text-gray-400">{{ msgAcc.zaloDisplayName || 'Messenger' }} • Dùng chung cookie Facebook</div>
+                  <div class="text-[11px] text-gray-400">{{ msgAcc.zaloDisplayName || 'Messenger' }} • {{ t.settings.accounts.sharedCookie }}</div>
                 </div>
-                <span class="text-blue-500 text-xs font-bold">🔗 Liên kết</span>
+                <span class="text-blue-500 text-xs font-bold whitespace-nowrap">{{ t.settings.accounts.linkBtn }}</span>
               </button>
               <!-- Tùy chọn tạo độc lập -->
               <button
@@ -442,25 +464,54 @@ const handleRemoveSnippetImage = (index: number) => {
                   <span>+</span>
                 </div>
                 <div class="text-left flex-1">
-                  <div class="font-semibold text-gray-600 text-sm">Tạo Fanpage độc lập</div>
-                  <div class="text-[11px] text-gray-400">Partition riêng, phải đăng nhập Facebook mới</div>
+                  <div class="font-semibold text-gray-600 text-sm">{{ t.settings.accounts.standaloneTitle }}</div>
+                  <div class="text-[11px] text-gray-400">{{ t.settings.accounts.standaloneDesc }}</div>
                 </div>
               </button>
             </div>
-            <button @click="showFanpagePicker = false" class="mt-2 text-xs text-gray-400 hover:text-gray-600">Hủy</button>
+            <button @click="showFanpagePicker = false" class="mt-2 text-xs text-gray-400 hover:text-gray-600">{{ t.settings.accounts.cancel }}</button>
           </div>
         </div>
 
         <!-- ===== TAB 2: CÀI ĐẶT HỆ THỐNG ===== -->
         <div v-if="activeSection === 'system'" class="space-y-6">
 
+          <!-- Section: Ngôn ngữ giao diện -->
+          <div class="border rounded-lg p-5 bg-gray-50/50">
+            <div class="flex items-center justify-between gap-4">
+              <div>
+                <h3 class="text-base font-bold text-gray-800 mb-1 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-500"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                  {{ t.settings.system.languageTitle }}
+                </h3>
+                <p class="text-xs text-gray-400">{{ t.settings.system.languageDesc }}</p>
+              </div>
+              <div class="inline-flex items-center bg-gray-200/80 p-1 rounded-lg text-sm font-semibold flex-shrink-0">
+                <button
+                  @click="setLocale('vi')"
+                  class="px-3.5 py-1.5 rounded-md transition flex items-center gap-1.5 whitespace-nowrap"
+                  :class="locale === 'vi' ? 'bg-white text-zalo-primary shadow-sm font-bold' : 'text-gray-600 hover:text-gray-800'"
+                >
+                  🇻🇳 Tiếng Việt
+                </button>
+                <button
+                  @click="setLocale('en')"
+                  class="px-3.5 py-1.5 rounded-md transition flex items-center gap-1.5 whitespace-nowrap"
+                  :class="locale === 'en' ? 'bg-white text-zalo-primary shadow-sm font-bold' : 'text-gray-600 hover:text-gray-800'"
+                >
+                  🇬🇧 English
+                </button>
+              </div>
+            </div>
+          </div>
+
           <!-- Section: Thư mục lưu trữ -->
           <div class="border rounded-lg p-5 bg-gray-50/50">
             <h3 class="text-base font-bold text-gray-800 mb-1 flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-500"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-              Thư mục lưu trữ dữ liệu
+              {{ t.settings.system.storageTitle }}
             </h3>
-            <p class="text-xs text-gray-400 mb-4">Toàn bộ cache Zalo, ảnh, và database sẽ được lưu tại thư mục này. Nên chọn ổ đĩa có dung lượng lớn để tránh tràn ổ C.</p>
+            <p class="text-xs text-gray-400 mb-4">{{ t.settings.system.storageDesc }}</p>
 
             <div class="flex items-center gap-3 mb-3">
               <div class="flex-1 bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm font-mono text-gray-600 truncate select-all">
@@ -469,36 +520,36 @@ const handleRemoveSnippetImage = (index: number) => {
               <button
                 @click="handleChangeStorage"
                 :disabled="isMigrating"
-                class="px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-zalo-primary hover:text-zalo-primary transition flex items-center gap-1.5 flex-shrink-0 disabled:opacity-50 disabled:cursor-wait"
+                class="px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-zalo-primary hover:text-zalo-primary transition flex items-center gap-1.5 flex-shrink-0 disabled:opacity-50 disabled:cursor-wait whitespace-nowrap"
               >
                 <template v-if="isMigrating">
                   <svg class="animate-spin h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Đang chuyển...
+                  {{ t.settings.system.migrating }}
                 </template>
                 <template v-else>
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-                  Chuyển nhà
+                  {{ t.settings.system.moveData }}
                 </template>
               </button>
               <button
                 @click="handleLoadStorage"
                 :disabled="isLoadingStorage"
-                class="px-4 py-2.5 bg-white border border-emerald-300 rounded-lg text-sm font-semibold text-emerald-700 hover:bg-emerald-50 hover:border-emerald-500 transition flex items-center gap-1.5 flex-shrink-0 disabled:opacity-50 disabled:cursor-wait"
-                title="Kết nối tới thư mục OmniChatData đã có sẵn (ví dụ từ USB hoặc máy tính khác)"
+                class="px-4 py-2.5 bg-white border border-emerald-300 rounded-lg text-sm font-semibold text-emerald-700 hover:bg-emerald-50 hover:border-emerald-500 transition flex items-center gap-1.5 flex-shrink-0 disabled:opacity-50 disabled:cursor-wait whitespace-nowrap"
+                :title="t.settings.system.loadDataTooltip"
               >
                 <template v-if="isLoadingStorage">
                   <svg class="animate-spin h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Đang kết nối...
+                  {{ t.settings.system.loadingData }}
                 </template>
                 <template v-else>
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                  Nạp dữ liệu
+                  {{ t.settings.system.loadData }}
                 </template>
               </button>
             </div>
@@ -519,17 +570,17 @@ const handleRemoveSnippetImage = (index: number) => {
             <div v-if="needsRestart" class="flex flex-col gap-2 bg-emerald-50 border border-emerald-200 rounded-lg p-4 mt-2">
               <div class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600 flex-shrink-0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                <p v-if="loadStorageSuccess" class="text-sm font-bold text-emerald-800">✅ Đã kết nối dữ liệu thành công!</p>
-                <p v-else class="text-sm font-bold text-emerald-800">✅ Đã chuyển phiên đăng nhập thành công!</p>
+                <p v-if="loadStorageSuccess" class="text-sm font-bold text-emerald-800">{{ t.settings.system.loadSuccessTitle }}</p>
+                <p v-else class="text-sm font-bold text-emerald-800">{{ t.settings.system.migrateSuccessTitle }}</p>
               </div>
-              <p v-if="loadStorageSuccess" class="text-xs text-emerald-700 ml-7">Ứng dụng sẽ sử dụng dữ liệu từ thư mục đã chọn. Vui lòng khởi động lại để áp dụng.</p>
-              <p v-else class="text-xs text-emerald-700 ml-7">Phiên đăng nhập Zalo đã được sao chép sang thư mục mới. Tin nhắn cũ sẽ được Zalo tự động đồng bộ lại sau khi khởi động.</p>
+              <p v-if="loadStorageSuccess" class="text-xs text-emerald-700 ml-7">{{ t.settings.system.loadSuccessDesc }}</p>
+              <p v-else class="text-xs text-emerald-700 ml-7">{{ t.settings.system.migrateSuccessDesc }}</p>
               <div class="ml-7 mt-1">
                 <button
                   @click="handleRestart"
-                  class="px-5 py-2 bg-emerald-600 text-white rounded-lg text-sm font-bold hover:bg-emerald-700 transition shadow-sm"
+                  class="px-5 py-2 bg-emerald-600 text-white rounded-lg text-sm font-bold hover:bg-emerald-700 transition shadow-sm whitespace-nowrap"
                 >
-                  🔄 Khởi động lại ngay
+                  {{ t.settings.system.restartNow }}
                 </button>
               </div>
             </div>
@@ -539,16 +590,16 @@ const handleRemoveSnippetImage = (index: number) => {
           <div class="border rounded-lg p-5 bg-gray-50/50">
             <h3 class="text-base font-bold text-gray-800 mb-1 flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-500"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-              Thông báo
+              {{ t.settings.system.notifSectionTitle }}
             </h3>
-            <p class="text-xs text-gray-400 mb-4">Cấu hình cách ứng dụng thông báo khi có tin nhắn mới.</p>
+            <p class="text-xs text-gray-400 mb-4">{{ t.settings.system.notifSectionDesc }}</p>
 
             <div class="space-y-4">
-              <!-- Toggle: Windows Notification -->
-              <div class="flex items-center justify-between">
+              <!-- Toggle: Desktop Notification -->
+              <div class="flex items-center justify-between gap-4">
                 <div>
-                  <p class="text-sm font-semibold text-gray-700">Hiển thị thông báo Windows</p>
-                  <p class="text-xs text-gray-400 mt-0.5">Bật/tắt popup thông báo Windows Desktop khi có khách nhắn tin mới</p>
+                  <p class="text-sm font-semibold text-gray-700">{{ t.settings.system.desktopNotifTitle }}</p>
+                  <p class="text-xs text-gray-400 mt-0.5">{{ t.settings.system.desktopNotifDesc }}</p>
                 </div>
                 <button
                   @click="emit('update:notificationEnabled', !notificationEnabled)"
@@ -565,10 +616,10 @@ const handleRemoveSnippetImage = (index: number) => {
               <div class="border-t border-gray-100"></div>
 
               <!-- Toggle: Sound -->
-              <div class="flex items-center justify-between">
+              <div class="flex items-center justify-between gap-4">
                 <div>
-                  <p class="text-sm font-semibold text-gray-700">Âm thanh thông báo</p>
-                  <p class="text-xs text-gray-400 mt-0.5">Phát tiếng "ting" khi có tin nhắn mới trên bất kỳ tài khoản nào</p>
+                  <p class="text-sm font-semibold text-gray-700">{{ t.settings.system.soundTitle }}</p>
+                  <p class="text-xs text-gray-400 mt-0.5">{{ t.settings.system.soundDesc }}</p>
                 </div>
                 <button
                   @click="emit('update:soundEnabled', !soundEnabled)"
@@ -586,15 +637,15 @@ const handleRemoveSnippetImage = (index: number) => {
 
               <!-- Kiểm tra cập nhật thủ công -->
               <div class="space-y-3">
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between gap-4">
                   <div>
-                    <p class="text-sm font-semibold text-gray-700">Phiên bản ứng dụng</p>
-                    <p class="text-xs text-gray-400 mt-0.5">Đang sử dụng phiên bản <span class="font-bold text-gray-600">V1.8.1</span></p>
+                    <p class="text-sm font-semibold text-gray-700">{{ t.settings.system.versionTitle }}</p>
+                    <p class="text-xs text-gray-400 mt-0.5">{{ t.settings.system.versionDescPrefix }} <span class="font-bold text-gray-600">V1.8.1</span></p>
                   </div>
                   <button
                     @click="handleCheckUpdate"
                     :disabled="updateCheckState === 'checking'"
-                    class="px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg text-sm font-semibold text-blue-600 hover:bg-blue-100 hover:border-blue-400 transition flex items-center gap-1.5 flex-shrink-0 disabled:opacity-50 disabled:cursor-wait"
+                    class="px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg text-sm font-semibold text-blue-600 hover:bg-blue-100 hover:border-blue-400 transition flex items-center gap-1.5 flex-shrink-0 disabled:opacity-50 disabled:cursor-wait whitespace-nowrap"
                   >
                     <svg 
                       xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
@@ -603,8 +654,8 @@ const handleRemoveSnippetImage = (index: number) => {
                       <polyline points="23 4 23 10 17 10"></polyline>
                       <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
                     </svg>
-                    <span v-if="updateCheckState === 'checking'">Đang kiểm tra...</span>
-                    <span v-else>Kiểm tra cập nhật</span>
+                    <span v-if="updateCheckState === 'checking'">{{ t.settings.system.checkingUpdate }}</span>
+                    <span v-else>{{ t.settings.system.checkUpdate }}</span>
                   </button>
                 </div>
 
@@ -614,21 +665,21 @@ const handleRemoveSnippetImage = (index: number) => {
                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                   </svg>
-                  <p class="text-sm font-semibold text-emerald-700">✅ Ứng dụng đang ở phiên bản mới nhất!</p>
+                  <p class="text-sm font-semibold text-emerald-700">{{ t.settings.system.upToDate }}</p>
                 </div>
 
                 <!-- Kết quả: Có bản mới -->
                 <div v-if="updateCheckState === 'has-update'" class="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2 transition-all">
-                  <p class="text-sm font-bold text-blue-800">🎉 Đã có phiên bản mới: <span class="text-blue-600">v{{ updateData.version }}</span></p>
+                  <p class="text-sm font-bold text-blue-800">{{ t.settings.system.hasUpdatePrefix }} <span class="text-blue-600">v{{ updateData.version }}</span></p>
                   <p v-if="updateData.changelog" class="text-xs text-blue-600">{{ updateData.changelog }}</p>
                   <div class="flex gap-2 mt-2">
-                    <a v-if="updateData.win_url" :href="updateData.win_url" target="_blank" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 transition flex items-center gap-1">
+                    <a v-if="updateData.win_url" :href="updateData.win_url" target="_blank" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 transition flex items-center gap-1 whitespace-nowrap">
                       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-                      Tải Windows
+                      {{ t.settings.system.downloadWin }}
                     </a>
-                    <a v-if="updateData.mac_url" :href="updateData.mac_url" target="_blank" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 transition flex items-center gap-1">
+                    <a v-if="updateData.mac_url" :href="updateData.mac_url" target="_blank" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 transition flex items-center gap-1 whitespace-nowrap">
                       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"></path><path d="M10 2c1 .5 2 2 2 5"></path></svg>
-                      Tải Macbook
+                      {{ t.settings.system.downloadMac }}
                     </a>
                   </div>
                 </div>
@@ -636,7 +687,7 @@ const handleRemoveSnippetImage = (index: number) => {
                 <!-- Kết quả: Lỗi -->
                 <div v-if="updateCheckState === 'error'" class="flex items-center gap-2 bg-red-50 border border-red-200 rounded-lg p-3">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-500 flex-shrink-0"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
-                  <p class="text-sm text-red-700">Không thể kết nối tới máy chủ cập nhật. Vui lòng thử lại.</p>
+                  <p class="text-sm text-red-700">{{ t.settings.system.updateError }}</p>
                 </div>
               </div>
             </div>
@@ -647,20 +698,20 @@ const handleRemoveSnippetImage = (index: number) => {
         <!-- ===== TAB 3: TIN NHẮN MẪU (SNIPPETS) ===== -->
         <div v-if="activeSection === 'snippets'" class="space-y-6">
           
-          <h2 class="text-lg font-bold text-gray-800">{{ isEditingSnippetId ? 'Sửa tin nhắn nhanh' : 'Tạo tin nhắn nhanh' }}</h2>
+          <h2 class="text-lg font-bold text-gray-800">{{ isEditingSnippetId ? t.settings.snippets.editTitle : t.settings.snippets.createTitle }}</h2>
 
           <!-- Form Thêm Mới Chuẩn Zalo -->
           <div class="border border-gray-300 rounded-lg bg-white overflow-hidden shadow-sm">
             <!-- Header: Phím tắt -->
             <div class="flex items-center gap-2 border-b border-gray-300 px-3 py-2 bg-white">
               <div class="bg-gray-200 text-gray-600 font-bold px-3 py-1 rounded text-sm select-none">\</div>
-              <input type="text" v-model="snippetForm.shortcut" class="flex-1 bg-transparent border-none outline-none text-sm py-1 font-mono text-gray-700" placeholder="Phím tắt (Ví dụ: xinchao)" maxlength="20" @keyup.enter="handleSaveSnippet">
+              <input type="text" v-model="snippetForm.shortcut" class="flex-1 bg-transparent border-none outline-none text-sm py-1 font-mono text-gray-700" :placeholder="t.settings.snippets.shortcutPlaceholder" maxlength="20" @keyup.enter="handleSaveSnippet">
               <span class="text-xs text-gray-400 font-mono">{{ snippetForm.shortcut.length }}/20</span>
             </div>
             
             <!-- Body: Nội dung -->
             <div class="p-0 border-b border-gray-200">
-              <textarea v-model="snippetForm.content" class="w-full bg-transparent border-none outline-none text-sm p-4 resize-none h-32 text-gray-800 placeholder-gray-400 leading-relaxed" placeholder="Nhập nội dung tin nhắn"></textarea>
+              <textarea v-model="snippetForm.content" class="w-full bg-transparent border-none outline-none text-sm p-4 resize-none h-32 text-gray-800 placeholder-gray-400 leading-relaxed" :placeholder="t.settings.snippets.contentPlaceholder"></textarea>
             </div>
             
             <!-- Footer: Hình ảnh & Actions -->
@@ -670,7 +721,7 @@ const handleRemoveSnippetImage = (index: number) => {
               <div v-if="snippetForm.images.length > 0" class="flex flex-wrap gap-2 px-1">
                 <div v-for="(img, idx) in snippetForm.images" :key="idx" class="relative group">
                   <img :src="img" class="h-16 w-16 object-cover rounded border border-gray-200 shadow-sm">
-                  <button @click="handleRemoveSnippetImage(idx)" class="absolute -top-1.5 -right-1.5 bg-red-500 hover:bg-red-600 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition shadow" title="Xóa ảnh">
+                  <button @click="handleRemoveSnippetImage(idx)" class="absolute -top-1.5 -right-1.5 bg-red-500 hover:bg-red-600 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition shadow" :title="t.settings.snippets.removeImage">
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                   </button>
                 </div>
@@ -679,18 +730,18 @@ const handleRemoveSnippetImage = (index: number) => {
               <div class="flex justify-between items-center mt-1">
                 <!-- Nút Thêm Ảnh -->
                 <div class="flex items-center gap-3">
-                  <button v-if="snippetForm.images.length < 6" class="px-3.5 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold rounded-full flex items-center gap-1.5 transition" @click="$refs.snippetImageInput && ($refs.snippetImageInput as any).click()">
+                  <button v-if="snippetForm.images.length < 6" class="px-3.5 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold rounded-full flex items-center gap-1.5 transition whitespace-nowrap" @click="$refs.snippetImageInput && ($refs.snippetImageInput as any).click()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                    Thêm ảnh {{ snippetForm.images.length > 0 ? `(${snippetForm.images.length}/6)` : '' }}
+                    {{ t.settings.snippets.addImage }} {{ snippetForm.images.length > 0 ? `(${snippetForm.images.length}/6)` : '' }}
                   </button>
                   <input type="file" ref="snippetImageInput" class="hidden" accept="image/*" multiple @change="handleSnippetImageUpload">
                 </div>
 
                 <!-- Buttons Hủy / Thêm -->
                 <div class="flex gap-2">
-                  <button @click="handleCancelEdit" class="px-5 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded font-semibold text-sm transition">Hủy</button>
-                  <button @click="handleSaveSnippet" :disabled="!snippetForm.shortcut || (!snippetForm.content && snippetForm.images.length === 0)" class="px-5 py-2 bg-blue-400 hover:bg-blue-500 text-white rounded font-bold text-sm transition disabled:opacity-50 disabled:cursor-not-allowed">
-                    {{ isEditingSnippetId ? 'Lưu' : 'Thêm' }}
+                  <button @click="handleCancelEdit" class="px-5 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded font-semibold text-sm transition whitespace-nowrap">{{ t.settings.snippets.cancel }}</button>
+                  <button @click="handleSaveSnippet" :disabled="!snippetForm.shortcut || (!snippetForm.content && snippetForm.images.length === 0)" class="px-5 py-2 bg-blue-400 hover:bg-blue-500 text-white rounded font-bold text-sm transition disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap">
+                    {{ isEditingSnippetId ? t.settings.snippets.save : t.settings.snippets.add }}
                   </button>
                 </div>
               </div>
@@ -701,7 +752,7 @@ const handleRemoveSnippetImage = (index: number) => {
           <div class="border rounded-lg overflow-hidden border-gray-200">
             <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
               <h3 class="text-sm font-bold text-gray-700 flex items-center gap-2">
-                Kho lưu trữ mẫu ({{ snippets.length }})
+                {{ t.settings.snippets.libraryTitle }} ({{ snippets.length }})
               </h3>
             </div>
             <div class="bg-white">
@@ -709,8 +760,8 @@ const handleRemoveSnippetImage = (index: number) => {
                  <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                  </div>
-                 <p class="text-sm font-semibold text-gray-600">Trống</p>
-                 <p class="text-xs text-gray-400 mt-1 max-w-[250px]">Chưa có mẫu nào. Hãy thêm một mẫu mới ở trên để tăng tốc độ trả lời khách hàng nhé.</p>
+                 <p class="text-sm font-semibold text-gray-600">{{ t.settings.snippets.emptyTitle }}</p>
+                 <p class="text-xs text-gray-400 mt-1 max-w-[260px]">{{ t.settings.snippets.emptyDesc }}</p>
               </div>
               <ul v-else class="divide-y divide-gray-100 max-h-[260px] overflow-y-auto">
                 <li v-for="snip in snippets" :key="snip.id" class="p-3.5 hover:bg-blue-50/30 transition flex items-start gap-4">
@@ -721,14 +772,14 @@ const handleRemoveSnippetImage = (index: number) => {
                     <p v-if="snip.content" class="text-sm text-gray-700 whitespace-pre-wrap break-words line-clamp-3 leading-relaxed opacity-90" :title="snip.content">{{ snip.content }}</p>
                     <div v-if="snip.imagePaths && snip.imagePaths.length > 0" class="mt-1 flex items-center gap-1.5 text-xs text-blue-500 font-semibold">
                       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                      Đính kèm {{ snip.imagePaths.length }} ảnh
+                      {{ t.settings.snippets.attachedImages(snip.imagePaths.length) }}
                     </div>
                   </div>
                   <div class="flex flex-col gap-1 items-center">
-                    <button @click="handleEditSnippet(snip)" class="p-1.5 text-blue-500 bg-white border border-blue-100 hover:bg-blue-50 hover:border-blue-200 rounded-md transition shadow-sm" title="Sửa">
+                    <button @click="handleEditSnippet(snip)" class="p-1.5 text-blue-500 bg-white border border-blue-100 hover:bg-blue-50 hover:border-blue-200 rounded-md transition shadow-sm" :title="t.settings.snippets.editTooltip">
                       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                     </button>
-                    <button @click="emit('deleteSnippet', snip.id!)" class="p-1.5 text-red-500 bg-white border border-red-100 hover:bg-red-50 hover:border-red-200 rounded-md transition shadow-sm" title="Xóa">
+                    <button @click="emit('deleteSnippet', snip.id!)" class="p-1.5 text-red-500 bg-white border border-red-100 hover:bg-red-50 hover:border-red-200 rounded-md transition shadow-sm" :title="t.settings.snippets.deleteTooltip">
                       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                     </button>
                   </div>
@@ -741,8 +792,8 @@ const handleRemoveSnippetImage = (index: number) => {
 
       <!-- Footer -->
       <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end">
-        <button @click="emit('close')" class="px-6 py-2 bg-zalo-primary text-white font-semibold rounded-lg hover:bg-blue-700 transition focus:outline-none shadow-sm">
-          Hoàn tất
+        <button @click="emit('close')" class="px-6 py-2 bg-zalo-primary text-white font-semibold rounded-lg hover:bg-blue-700 transition focus:outline-none shadow-sm whitespace-nowrap">
+          {{ t.settings.done }}
         </button>
       </div>
     </div>

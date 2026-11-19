@@ -16,9 +16,14 @@ const CONFIG_FILE = join(CONFIG_DIR, 'omnichat-config.json')
 
 interface AppConfig {
   storagePath?: string
+  language?: 'vi' | 'en'
   // === Migration tracking ===
   migrationStatus?: 'completed' | 'dismissed' | 'cleaned'
   oldStoragePath?: string
+}
+
+function isEnglish(): boolean {
+  return readConfig().language === 'en'
 }
 
 function readConfig(): AppConfig {
@@ -160,7 +165,7 @@ function createWindow(): void {
     minHeight: 600,
     show: false,
     autoHideMenuBar: true,
-    title: 'Stepwell OmniChat - V1.7',
+    title: 'Stepwell OmniChat - V1.8.1',
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -261,7 +266,7 @@ app.whenReady().then(() => {
             overrideBrowserWindowOptions: {
               width: 600,
               height: 700,
-              title: 'Đăng nhập Facebook',
+              title: isEnglish() ? 'Facebook Login' : 'Đăng nhập Facebook',
               autoHideMenuBar: true
             }
           }
@@ -319,6 +324,14 @@ app.whenReady().then(() => {
     }
   })
 
+  // ===== IPC: Language Preference =====
+  ipcMain.handle('set-language', (_e, lang: 'vi' | 'en') => {
+    const cfg = readConfig()
+    cfg.language = lang === 'en' ? 'en' : 'vi'
+    writeConfig(cfg)
+    return true
+  })
+
   // ===== IPC: Storage Path =====
   ipcMain.handle('get-storage-path', () => {
     return app.getPath('userData')
@@ -326,13 +339,14 @@ app.whenReady().then(() => {
 
   // ===== IPC: Smart Storage Migration =====
   ipcMain.handle('select-storage-folder', async () => {
+    const en = isEnglish()
     const win = BrowserWindow.getFocusedWindow()
-    if (!win) return { success: false, error: 'Không tìm thấy cửa sổ' }
+    if (!win) return { success: false, error: en ? 'Window not found' : 'Không tìm thấy cửa sổ' }
 
     const result = await dialog.showOpenDialog(win, {
-      title: 'Chọn thư mục lưu trữ dữ liệu OmniChat',
+      title: en ? 'Select OmniChat Data Storage Folder' : 'Chọn thư mục lưu trữ dữ liệu OmniChat',
       properties: ['openDirectory', 'createDirectory'],
-      buttonLabel: 'Chọn thư mục này'
+      buttonLabel: en ? 'Select Folder' : 'Chọn thư mục này'
     })
 
     if (result.canceled || result.filePaths.length === 0) {
@@ -344,7 +358,12 @@ app.whenReady().then(() => {
 
     // Không cho chọn cùng thư mục hiện tại
     if (newBasePath === currentUserData) {
-      return { success: false, error: 'Thư mục đã chọn trùng với thư mục hiện tại' }
+      return {
+        success: false,
+        error: en
+          ? 'Selected folder is already the active storage directory.'
+          : 'Thư mục đã chọn trùng với thư mục hiện tại'
+      }
     }
 
     try {
@@ -421,13 +440,14 @@ app.whenReady().then(() => {
 
   // ===== IPC: Kết nối thư mục dữ liệu CÓ SẴN (Restore/Load) =====
   ipcMain.handle('load-storage-folder', async () => {
+    const en = isEnglish()
     const win = BrowserWindow.getAllWindows()[0]
-    if (!win) return { success: false, error: 'Phát hiện lỗi không tìm thấy cửa sổ.' }
+    if (!win) return { success: false, error: en ? 'Application window not found.' : 'Phát hiện lỗi không tìm thấy cửa sổ.' }
 
     const result = await dialog.showOpenDialog(win, {
-      title: 'Chọn thư mục chứa dữ liệu OmniChat đã lưu (OmniChatData)',
+      title: en ? 'Select Existing OmniChat Data Folder (OmniChatData)' : 'Chọn thư mục chứa dữ liệu OmniChat đã lưu (OmniChatData)',
       properties: ['openDirectory'],
-      buttonLabel: 'Khôi phục từ thư mục này'
+      buttonLabel: en ? 'Load from this folder' : 'Khôi phục từ thư mục này'
     })
 
     if (result.canceled || result.filePaths.length === 0) {
@@ -454,7 +474,12 @@ app.whenReady().then(() => {
       const currentPath = cfg.storagePath || app.getPath('userData')
 
       if (targetPath === currentPath) {
-        return { success: false, error: 'Thư mục đã chọn đang là thư mục hoạt động hiện tại.' }
+        return {
+          success: false,
+          error: en
+            ? 'Selected folder is already the active storage directory.'
+            : 'Thư mục đã chọn đang là thư mục hoạt động hiện tại.'
+        }
       }
 
       // Chỉ việc cập nhật config, KHÔNG COPY GÌ CẢ
@@ -513,14 +538,17 @@ app.whenReady().then(() => {
     }
 
     try {
+      const en = isEnglish()
       // Xác nhận lần cuối qua dialog hệ thống
       const win = BrowserWindow.getFocusedWindow()
       if (win) {
         const confirm = await dialog.showMessageBox(win, {
           type: 'warning',
-          title: 'Xác nhận xóa dữ liệu cũ',
-          message: `Bạn có chắc chắn muốn xóa toàn bộ dữ liệu cũ tại:\n${cfg.oldStoragePath}?\n\nHành động này KHÔNG THỂ hoàn tác!`,
-          buttons: ['Hủy', 'Xóa vĩnh viễn'],
+          title: en ? 'Confirm Delete Old Data' : 'Xác nhận xóa dữ liệu cũ',
+          message: en
+            ? `Are you sure you want to permanently delete all old data at:\n${cfg.oldStoragePath}?\n\nThis action CANNOT be undone!`
+            : `Bạn có chắc chắn muốn xóa toàn bộ dữ liệu cũ tại:\n${cfg.oldStoragePath}?\n\nHành động này KHÔNG THỂ hoàn tác!`,
+          buttons: en ? ['Cancel', 'Delete Permanently'] : ['Hủy', 'Xóa vĩnh viễn'],
           defaultId: 0,
           cancelId: 0
         })
@@ -592,7 +620,7 @@ app.whenReady().then(() => {
     const sellerWindow = new BrowserWindow({
       width: 1200,
       height: 800,
-      title: 'Kênh Người Bán',
+      title: isEnglish() ? 'Seller Center' : 'Kênh Người Bán',
       webPreferences: {
         partition: partition, // Dùng chung partition để không phải đăng nhập lại
         nodeIntegration: false,

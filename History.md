@@ -19,3 +19,4 @@ Phase 1:
   + Tính năng Nạp dữ liệu: load profile từ USB/máy khác mà không cần copy
 - [V1.8] Cập nhật giao diện ứng dụng, tối ưu màn hình cài đặt (SettingsModal) và nâng cấp hệ thống thông báo (useNotifications)
 - [V1.8.1] Tích hợp nền tảng nhắn tin Telegram Web K
+- [V1.8.2] Hỗ trợ chuyển đổi song ngữ Việt / Anh (VI/EN) trên toàn bộ giao diện & hộp thoại hệ thống, kèm README song ngữ (EN/VI)

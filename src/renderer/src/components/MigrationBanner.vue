@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   show: boolean
@@ -39,10 +42,10 @@ const formattedSize = computed(() => {
       <!-- Content -->
       <div class="flex-1 min-w-0">
         <p class="text-sm font-bold text-amber-900">
-          📦 Dữ liệu cũ vẫn tồn tại trên ổ đĩa
+          {{ t.migration.oldDataTitle }}
         </p>
         <p class="text-xs text-amber-700 mt-0.5 truncate">
-          Thư mục: <code class="bg-amber-100 px-1 py-0.5 rounded text-[11px] font-mono">{{ oldPath }}</code>
+          {{ t.migration.folderLabel }} <code class="bg-amber-100 px-1 py-0.5 rounded text-[11px] font-mono">{{ oldPath }}</code>
           <span class="ml-2 font-semibold">({{ formattedSize }})</span>
         </p>
       </div>
@@ -53,16 +56,16 @@ const formattedSize = computed(() => {
         <button
           @click="emit('dismiss')"
           :disabled="isDeleting"
-          class="px-3 py-1.5 bg-white border border-amber-300 rounded-lg text-xs font-semibold text-amber-700 hover:bg-amber-50 transition disabled:opacity-50"
+          class="px-3 py-1.5 bg-white border border-amber-300 rounded-lg text-xs font-semibold text-amber-700 hover:bg-amber-50 transition disabled:opacity-50 whitespace-nowrap"
         >
-          Để sau
+          {{ t.migration.later }}
         </button>
 
         <!-- Delete Button -->
         <button
           @click="emit('delete')"
           :disabled="isDeleting"
-          class="px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 disabled:opacity-50"
+          class="px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 disabled:opacity-50 whitespace-nowrap"
           :class="isDeleting
             ? 'bg-gray-400 text-white cursor-wait'
             : 'bg-red-500 text-white hover:bg-red-600 shadow-sm'"
@@ -73,7 +76,7 @@ const formattedSize = computed(() => {
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            Đang xóa...
+            {{ t.migration.deleting }}
           </template>
           <template v-else>
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -82,7 +85,7 @@ const formattedSize = computed(() => {
               <line x1="10" y1="11" x2="10" y2="17"></line>
               <line x1="14" y1="11" x2="14" y2="17"></line>
             </svg>
-            Xóa dữ liệu cũ
+            {{ t.migration.deleteOld }}
           </template>
         </button>
       </div>
