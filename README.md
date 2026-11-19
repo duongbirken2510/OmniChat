@@ -34,7 +34,11 @@
 | Operating System | Architecture | Installer Package | Size | Direct Download |
 | :--- | :---: | :--- | :---: | :---: |
 | **Windows 10 / 11** | `x64` (64-bit) | `OmniChat_V1.8.2_Setup.exe` | **78.9 MB** | [**⬇️ Download `.exe`**](https://github.com/duongbirken2510/OmniChat/releases/download/v1.8.2/OmniChat_V1.8.2_Setup.exe) |
-| **All Releases** | — | GitHub Releases Page | — | [View Release Notes](https://github.com/duongbirken2510/OmniChat/releases/latest) |
+| **macOS (Disk Image)** | `Intel / Apple Silicon` | `OmniChat_V1.8.2.dmg` | **242 MB** | [**⬇️ Download `.dmg`**](https://github.com/duongbirken2510/OmniChat/releases/download/v1.8.2/OmniChat_V1.8.2.dmg) |
+| **macOS (Compressed)** | `Intel / Apple Silicon` | `OmniChat_V1.8.2_macOS.zip` | **95 MB** | [**⬇️ Download `.zip`**](https://github.com/duongbirken2510/OmniChat/releases/download/v1.8.2/OmniChat_V1.8.2_macOS.zip) |
+| **Linux (Ubuntu / Debian)** | `amd64` (64-bit) | `OmniChat_V1.8.2_amd64.deb` | **81 MB** | [**⬇️ Download `.deb`**](https://github.com/duongbirken2510/OmniChat/releases/download/v1.8.2/OmniChat_V1.8.2_amd64.deb) |
+| **Linux (Universal)** | `x86_64` | `OmniChat_V1.8.2.AppImage` | **80 MB** | [**⬇️ Download `.AppImage`**](https://github.com/duongbirken2510/OmniChat/releases/download/v1.8.2/OmniChat_V1.8.2.AppImage) |
+| **📖 Documentation** | `EN / VI` | [**User Guide (A–Z)**](./docs/USER_GUIDE.md) • [**Technical Whitepaper**](./info/Introduce_OmniChat.md) | — | [Product Page ↗](https://duongbirken.deta.vn/omnichat) |
 
 ### 🌐 Supported Platforms
 
@@ -114,7 +118,11 @@ pnpm run build:unpack  # Unpacked folder for local testing
 | Hệ điều hành | Kiến trúc | Tên tệp cài đặt | Dung lượng | Liên kết tải trực tiếp |
 | :--- | :---: | :--- | :---: | :---: |
 | **Windows 10 / 11** | `x64` (64-bit) | `OmniChat_V1.8.2_Setup.exe` | **78.9 MB** | [**⬇️ Tải bộ cài `.exe`**](https://github.com/duongbirken2510/OmniChat/releases/download/v1.8.2/OmniChat_V1.8.2_Setup.exe) |
-| **Tất cả phiên bản** | — | Trang GitHub Releases | — | [Xem chi tiết bản phát hành](https://github.com/duongbirken2510/OmniChat/releases/latest) |
+| **macOS (Đĩa cài đặt)** | `Intel / Apple Silicon` | `OmniChat_V1.8.2.dmg` | **242 MB** | [**⬇️ Tải bộ cài `.dmg`**](https://github.com/duongbirken2510/OmniChat/releases/download/v1.8.2/OmniChat_V1.8.2.dmg) |
+| **macOS (Bản nén gọn)** | `Intel / Apple Silicon` | `OmniChat_V1.8.2_macOS.zip` | **95 MB** | [**⬇️ Tải bản `.zip`**](https://github.com/duongbirken2510/OmniChat/releases/download/v1.8.2/OmniChat_V1.8.2_macOS.zip) |
+| **Linux (Ubuntu / Debian)** | `amd64` (64-bit) | `OmniChat_V1.8.2_amd64.deb` | **81 MB** | [**⬇️ Tải gói `.deb`**](https://github.com/duongbirken2510/OmniChat/releases/download/v1.8.2/OmniChat_V1.8.2_amd64.deb) |
+| **Linux (Chạy ngay)** | `x86_64` | `OmniChat_V1.8.2.AppImage` | **80 MB** | [**⬇️ Tải `.AppImage`**](https://github.com/duongbirken2510/OmniChat/releases/download/v1.8.2/OmniChat_V1.8.2.AppImage) |
+| **📖 Tài liệu & Hướng dẫn** | `VI / EN` | [**Cẩm nang Hướng dẫn sử dụng (A–Z)**](./docs/USER_GUIDE.md) • [**Hồ sơ Công nghệ 10 Chương**](./info/Introduce_OmniChat.md) | — | [Trang sản phẩm ↗](https://duongbirken.deta.vn/omnichat) |
 
 ### 🌐 Các Nền Tảng Hỗ Trợ
 
