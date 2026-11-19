@@ -1,18 +1,33 @@
 <div align="center">
-  <img src="./Stepwell_Chat_icon.png" alt="OmniChat Logo" width="88" height="88" />
-  <h1>OmniChat</h1>
-  <p><strong>All-in-One Multi-Platform Messaging Desktop Workspace</strong></p>
-  <p>
-    <a href="#-english">🇬🇧 English</a> •
-    <a href="#-tiếng-việt">🇻🇳 Tiếng Việt</a>
-  </p>
+
+<img src="./docs/media/omnichat_brand_banner.png" alt="OmniChat Official Brand Banner" width="100%" />
+
+# 🚀 OmniChat v1.8.2
+
+### **All-in-One Multi-Platform Messaging Desktop Workspace**
+*Ứng Dụng Desktop Hợp Nhất Đa Tài Khoản Nhắn Tin & Sàn TMĐT (English & Tiếng Việt)*
+
+[![Release v1.8.2](https://img.shields.io/badge/Release-v1.8.2-16A34A?style=for-the-badge)](https://github.com/duongbirken2510/OmniChat/releases/tag/v1.8.2)
+[![Windows Installer](https://img.shields.io/badge/Windows%2010%2F11%20(x64)-78.9%20MB%20.exe-0078D6?style=for-the-badge&logo=windows)](https://github.com/duongbirken2510/OmniChat/releases/download/v1.8.2/OmniChat_V1.8.2_Setup.exe)
+[![Electron + Vue 3](https://img.shields.io/badge/Electron%2033-Vue%203%20%2B%20TypeScript-47848F?style=for-the-badge&logo=electron&logoColor=white)](https://electronjs.org/)
+[![Bilingual](https://img.shields.io/badge/Language-English%20%7C%20Ti%E1%BA%BFng%20Vi%E1%BB%87t-2563EB?style=for-the-badge)](#)
+[![Author Website](https://img.shields.io/badge/Website-duongbirken.deta.vn-0EA5E9?style=for-the-badge&logo=googlechrome&logoColor=white)](https://duongbirken.deta.vn)
+
+[**🇬🇧 English**](#-english) • [**📸 Screenshots (EN)**](#-ui-screenshots-english-edition) • [**📥 Download `.exe`**](#-download-official-installer-latest-v182) • [**🇻🇳 Tiếng Việt**](#-tiếng-việt) • [**📸 Ảnh Giao Diện (VI)**](#-ảnh-chụp-giao-diện-bản-tiếng-việt) • [**👨‍💻 Author & Contact**](#-author--contact--tác-giả--liên-hệ)
+
 </div>
 
 ---
 
 ## 🇬🇧 English
 
-**OmniChat** is a lightweight, high-performance desktop application built with **Electron**, **Vue 3**, and **TypeScript**. Designed for sales, telesales, e-commerce sellers, and customer support teams, OmniChat unifies multiple accounts across **7 messaging & marketplace platforms** into a single workspace with strict session isolation and instant quick-reply tools.
+<div align="center">
+  <img src="./docs/media/omnichat_social_hero.jpg" alt="OmniChat 3D Studio Product Hero" width="100%" />
+</div>
+
+<br />
+
+**OmniChat** is a lightweight, high-performance desktop workspace built with **Electron**, **Vue 3**, and **TypeScript**. Designed for sales, telesales, e-commerce sellers, and customer support teams, OmniChat unifies multiple accounts across **7 messaging & marketplace platforms** into a single window with strict session isolation and instant quick-reply tools.
 
 ### 📥 Download Official Installer (Latest: `v1.8.2`)
 
@@ -33,65 +48,59 @@
 | **Shopee** | ✅ | Shopee Seller Webchat + 1-click **Seller Center** switch sharing the same session |
 | **TikTok Shop** | ✅ | TikTok Seller Chat + 1-click **Seller Center** switch & custom-protocol popup blocker (`bytedance://`) |
 
+### 📸 UI Screenshots (English Edition)
+
+#### 1. Unified Multi-Platform Workspace & `\` Quick Reply Autocomplete
+Operate accounts across Zalo, Messenger, Fanpage, WhatsApp, Telegram, Shopee, and TikTok side-by-side. Type `\shortcut` in any chat box to trigger the live Quick Reply popup with attached image counts.
+
+![OmniChat Unified Workspace - English](./docs/screenshots/01-workspace-en.png)
+
+#### 2. Multi-Account Manager & Shared-Cookie Fanpage Linking
+Group accounts cleanly by platform, customize aliases/avatars, hide inactive accounts to free RAM (`0 MB` webview overhead), or link Facebook Fanpages directly to an existing Messenger session.
+
+![OmniChat Account Manager - English](./docs/screenshots/02-accounts-en.png)
+
+#### 3. System Settings: 1-Click Bilingual Switcher & Portable Storage
+Switch between **English** and **Vietnamese** instantly, relocate `OmniChatData` off Drive C (`Move Data`), or connect to an existing portable profile (`Load Data`) from a USB drive or another PC.
+
+![OmniChat System Settings - English](./docs/screenshots/03-system-en.png)
+
+#### 4. Smart Quick Replies with Multi-Image Auto-Paste
+Create reusable `\shortcut` templates with up to **6 local images** — text is inserted first and images are pasted sequentially via the native OS clipboard.
+
+![OmniChat Quick Replies - English](./docs/screenshots/04-snippets-en.png)
+
 ### ✨ Key Features
 
-#### 1. Strict Multi-Account Session Isolation & Resource Optimization
-* **Isolated Chromium Partitions (`persist:`):** Run 2, 5, or more accounts of the same platform side-by-side without cookie conflicts.
-* **Zero-Waste Background Tabs:** Inactive tabs automatically pause DOM/avatar polling, and hidden accounts completely unmount their webviews to free RAM and CPU.
-
-#### 2. Smart Quick Replies (`\` Trigger + Multi-Image Auto-Paste)
-* Type `\` followed by your shortcut (e.g., `\hello`) inside **any** chat input box to open an inline autocomplete menu.
-* Attach up to **6 local images** per template — OmniChat inserts the text first and automatically pastes each image sequentially via the native clipboard.
-
-#### 3. Instant Notifications & Sound Alerts
-* **Intercepted Web Notifications:** Captures in-page notifications immediately and triggers native OS desktop popups + a clean Web Audio API chime.
-* **Multi-Strategy Unread Scanner:** Tracks unread counts via DOM badges, visual unread indicators, and document title observers, accompanied by an animated sidebar bell indicator.
-
-#### 4. Smart Storage Migration & Portable Profile Loader
-* **Move Data Off Drive C:** Relocate your entire `OmniChatData` directory (sessions, cache, IndexedDB, quick-reply images) to another drive (`D:\`, `E:\`, etc.) without logging in again.
-* **Portable Profile Loader:** Point OmniChat to an existing `OmniChatData` folder (from a USB drive or another computer) and resume work immediately, backed by automatic JSON snapshots for accounts and quick replies.
-
-#### 5. Bilingual Interface (`🇬🇧 EN` / `🇻🇳 VI`)
-* Switch seamlessly between **English** and **Vietnamese** in 1 click from either the left sidebar (`VI` / `EN` badge) or **Settings → System**, including native OS dialogs.
+1. **Strict Multi-Account Session Isolation (`persist:` Partitions):** Run multiple accounts of the same platform simultaneously without cookie collisions. Inactive tabs pause DOM/avatar polling, and hidden accounts completely unmount webviews.
+2. **Smart Quick Replies (`\` Trigger + 6 Images):** Instant inline autocomplete across all webviews with automatic native-clipboard image pasting.
+3. **Real-Time Notifications & Sound Chime:** Intercepts web notifications immediately to display native desktop popups, play a Web Audio API chime, and bounce an unread bell indicator.
+4. **Zero Drive-C Bloat & Portable Profiles:** Relocate storage to `D:\OmniChatData` or load existing sessions from external drives backed by automatic JSON snapshots.
+5. **Bilingual Interface (`🇬🇧 EN` / `🇻🇳 VI`):** Live 1-click language switching across the sidebar, settings modal, and native OS dialogs.
 
 ### 🛠️ Tech Stack
 
 * **Desktop Runtime:** Electron 33 (`webviewTag` + isolated session partitions + custom `local-img://` protocol)
 * **Frontend:** Vue 3 (`<script setup>` Composition API), TypeScript, Vite (`electron-vite`), Tailwind CSS 4
 * **Local Database:** Dexie.js (IndexedDB) + automatic local JSON file backups
-* **Packaging:** `electron-builder` (NSIS installer for Windows, DMG for macOS, AppImage/DEB/Snap for Linux)
+* **Packaging:** `electron-builder` (Maximum-compressed NSIS installer for Windows, DMG for macOS, AppImage/DEB/Snap for Linux)
 
 ### 🚀 Getting Started (For Developers)
 
-#### Prerequisites
-* **Node.js** (LTS >= 20 recommended)
-* **pnpm** (recommended) or **npm**
-
-#### 1. Install Dependencies
 ```bash
+# 1. Clone repository & install dependencies
 git clone https://github.com/duongbirken2510/OmniChat.git
 cd OmniChat
 pnpm install
-```
 
-#### 2. Run in Development Mode
-```bash
+# 2. Start hot-reload development environment
 pnpm run dev
-```
 
-#### 3. Typecheck & Build Installers
-```bash
-# Run TypeScript & Vue type checks
+# 3. Typecheck & build production installers
 pnpm run typecheck
-
-# Build Windows installer (.exe)
-pnpm run build:win
-
-# Build macOS installer (.dmg)
-pnpm run build:mac
-
-# Build unpacked directory for local testing
-pnpm run build:unpack
+pnpm run build:win     # Windows (.exe)
+pnpm run build:mac     # macOS (.dmg)
+pnpm run build:unpack  # Unpacked folder for local testing
 ```
 
 ---
@@ -119,68 +128,65 @@ pnpm run build:unpack
 | **Shopee** | ✅ | Shopee Webchat + chuyển nhanh sang **Kênh Người Bán** giữ nguyên phiên đăng nhập |
 | **TikTok Shop** | ✅ | TikTok Seller Chat + mở nhanh **Kênh Người Bán** & chặn triệt để popup protocol lạ (`bytedance://`) |
 
+### 📸 Ảnh Chụp Giao Diện (Bản Tiếng Việt)
+
+#### 1. Không Gian Hộp Thư Hợp Nhất & Gợi Ý Tin Nhắn Nhanh `\`
+Quản lý song song Zalo, Messenger, Fanpage, WhatsApp, Telegram, Shopee và TikTok trên thanh Sidebar trực quan. Gõ `\phimtat` ngay tại ô nhập chat để bật menu chèn mẫu kèm hình ảnh đính kèm.
+
+![Giao diện Hộp thư hợp nhất OmniChat - Tiếng Việt](./docs/screenshots/01-workspace-vi.png)
+
+#### 2. Quản Lý Đa Tài Khoản & Liên Kết Fanpage Chung Cookie
+Phân nhóm tài khoản rõ ràng theo từng nền tảng, đổi tên gọi nhớ/ảnh đại diện, bấm **Ẩn** để giải phóng hoàn toàn RAM webview, hoặc liên kết Fanpage dùng chung phiên đăng nhập với Messenger.
+
+![Quản lý Tài khoản OmniChat - Tiếng Việt](./docs/screenshots/02-accounts-vi.png)
+
+#### 3. Cài Đặt Hệ Thống: Song Ngữ 1-Chạm & Chuyển Nhà Dữ Liệu
+Chuyển đổi tức thì giữa **Tiếng Việt (`🇻🇳 VI`)** và **Tiếng Anh (`🇬🇧 EN`)**, di chuyển thư mục `OmniChatData` sang ổ đĩa khác tránh tràn ổ C (**Chuyển nhà**) hoặc kết nối hồ sơ có sẵn từ USB/máy khác (**Nạp dữ liệu**).
+
+![Cài đặt Hệ thống OmniChat - Tiếng Việt](./docs/screenshots/03-system-vi.png)
+
+#### 4. Kho Tin Nhắn Mẫu Kèm Tự Động Dán 6 Hình Ảnh
+Tạo nhanh phím tắt `\khuyenmai`, `\xinchao`, `\thanhtoan` đính kèm tối đa **6 ảnh sản phẩm / mã QR** — ứng dụng tự động điền chữ trước rồi dán lần lượt từng ảnh qua Clipboard hệ thống.
+
+![Quản lý Tin nhắn mẫu OmniChat - Tiếng Việt](./docs/screenshots/04-snippets-vi.png)
+
 ### ✨ Tính Năng Nổi Bật
 
-#### 1. Cách Ly Phiên Đăng Nhập & Tối Ưu Tài Nguyên
-* **Chromium Partitions độc lập (`persist:`):** Đăng nhập cùng lúc nhiều tài khoản Zalo, Messenger, Shopee, TikTok… mà không bị đá phiên hay xung đột cookie.
-* **Tiết kiệm RAM & CPU:** Tự động tạm dừng bộ quét DOM ở các tab không hiển thị; tài khoản được bấm **Ẩn** sẽ tắt hoàn toàn webview để giải phóng bộ nhớ.
-
-#### 2. Tin Nhắn Mẫu Siêu Tốc (Gõ phím tắt `\` + Đính kèm 6 ảnh)
-* Chỉ cần gõ dấu `\` kèm phím tắt (VD: `\xinchao`) ngay trong ô nhập chat để bật bảng gợi ý nhanh.
-* Hỗ trợ đính kèm tối đa **6 hình ảnh** cho mỗi mẫu — tự động chèn nội dung chữ trước rồi lần lượt dán từng ảnh qua Clipboard hệ thống.
-
-#### 3. Thông Báo & Âm Thanh Thời Gian Thực
-* **Bắt thông báo tức thì:** Tự động nhận diện tin nhắn mới, phát âm báo "ting" qua Web Audio API, hiển thị popup thông báo Desktop và hiệu ứng chuông rung trên thanh Sidebar.
-
-#### 4. Chuyển Nhà Dữ Liệu & Nạp Hồ Sơ Di Động (Tránh Tràn Ổ C)
-* **Chuyển nhà (`Move Data`):** Di chuyển toàn bộ thư mục dữ liệu `OmniChatData` sang ổ đĩa khác (`D:\`, `E:\`…) mà vẫn giữ nguyên phiên đăng nhập.
-* **Nạp dữ liệu (`Load Data`):** Kết nối trực tiếp tới thư mục `OmniChatData` có sẵn từ USB hoặc máy tính khác kèm cơ chế tự động sao lưu JSON cho danh sách tài khoản và tin nhắn mẫu.
-
-#### 5. Giao Diện Song Ngữ Anh – Việt (`🇬🇧 EN` / `🇻🇳 VI`)
-* Chuyển đổi tức thì giữa **Tiếng Việt** và **Tiếng Anh** chỉ với 1 cú nhấp chuột ngay trên thanh Sidebar bên trái hoặc trong mục **Cài đặt → Hệ thống** (đồng bộ cả hộp thoại hệ điều hành).
+1. **Cách Ly Phiên Đăng Nhập & Tiết Kiệm Tài Nguyên:** Mỗi tài khoản chạy trong một phân vùng Chromium `persist:` độc lập; tự động tạm dừng quét DOM trên tab ẩn và tắt hẳn webview khi ẩn tài khoản.
+2. **Tin Nhắn Mẫu Siêu Tốc (`\` + 6 Ảnh):** Gợi ý trực tiếp trong mọi ô nhập liệu và tự động dán ảnh qua Clipboard hệ điều hành.
+3. **Thông Báo & Âm Thanh Tức Thì:** Bắt thông báo thời gian thực kèm âm báo Web Audio API, popup thông báo Desktop và hiệu ứng chuông rung trên Sidebar.
+4. **Chuyển Nhà & Nạp Hồ Sơ Di Động:** Chống tràn ổ C hiệu quả, kết hợp cơ chế tự động sao lưu JSON bảo vệ danh sách tài khoản và tin nhắn mẫu khi cài mới/cập nhật.
+5. **Giao Diện Song Ngữ Anh – Việt (`🇬🇧 EN` / `🇻🇳 VI`):** Đổi ngôn ngữ 1-chạm trên Sidebar hoặc trong Cài đặt, đồng bộ cả hộp thoại gốc của hệ điều hành.
 
 ### 🛠️ Công Nghệ Nền Tảng
 
 * **Desktop Runtime:** Electron 33 (`webviewTag` + phân vùng phiên độc lập + giao thức nội bộ `local-img://`)
 * **Frontend:** Vue 3 (`<script setup>` Composition API), TypeScript, Vite (`electron-vite`), Tailwind CSS 4
 * **Cơ sở dữ liệu cục bộ:** Dexie.js (IndexedDB) kết hợp tự động sao lưu file JSON trên ổ cứng
-* **Đóng gói:** `electron-builder` (NSIS cho Windows, DMG cho macOS, AppImage/DEB/Snap cho Linux)
+* **Đóng gói:** `electron-builder` (Nén tối đa NSIS cho Windows, DMG cho macOS, AppImage/DEB/Snap cho Linux)
 
 ### 🚀 Hướng Dẫn Cài Đặt & Phát Triển
 
-#### Yêu cầu môi trường
-* **Node.js** (khuyến nghị bản LTS >= 20)
-* **pnpm** (khuyến nghị) hoặc **npm**
-
-#### 1. Cài đặt thư viện
 ```bash
+# 1. Clone mã nguồn & cài đặt thư viện
 git clone https://github.com/duongbirken2510/OmniChat.git
 cd OmniChat
 pnpm install
-```
 
-#### 2. Chạy môi trường phát triển (Hot-Reload)
-```bash
+# 2. Khởi chạy môi trường phát triển (Hot-Reload)
 pnpm run dev
-```
 
-#### 3. Kiểm tra kiểu dữ liệu & Đóng gói bản cài đặt
-```bash
-# Kiểm tra TypeScript & Vue
+# 3. Kiểm tra kiểu dữ liệu & đóng gói bộ cài đặt
 pnpm run typecheck
-
-# Đóng gói bộ cài Windows (.exe)
-pnpm run build:win
-
-# Đóng gói bộ cài macOS (.dmg)
-pnpm run build:mac
-
-# Biên dịch thư mục chạy thử (chưa nén installer)
-pnpm run build:unpack
+pnpm run build:win     # Đóng gói bộ cài Windows (.exe)
+pnpm run build:mac     # Đóng gói bộ cài macOS (.dmg)
+pnpm run build:unpack  # Biên dịch thư mục chạy thử
 ```
 
 ---
 
-<div align="center">
-  <sub>Developed by <strong>Stepwell / Duong Birken</strong> • Built with Electron, Vue 3 & TypeScript</sub>
-</div>
+## 👨‍💻 Author & Contact / Tác Giả & Liên Hệ
+
+| 🇬🇧 About the Author | 🇻🇳 Thông Tin Tác Giả |
+| :--- | :--- |
+| **OmniChat** is engineered and maintained by **Duong Birken** to streamline multi-account customer communication across messaging apps and e-commerce marketplaces.<br><br>🌐 **Website:** [https://duongbirken.deta.vn](https://duongbirken.deta.vn)<br>🐞 **Issues & Feedback:** [GitHub Issues](https://github.com/duongbirken2510/OmniChat/issues) | **OmniChat** được phát triển và tối ưu bởi **Duong Birken** nhằm giải quyết triệt để bài toán vận hành đa tài khoản nhắn tin & chăm sóc khách hàng đa sàn trên một không gian hợp nhất.<br><br>🌐 **Website:** [https://duongbirken.deta.vn](https://duongbirken.deta.vn)<br>🐞 **Báo lỗi & Góp ý:** [GitHub Issues](https://github.com/duongbirken2510/OmniChat/issues) |

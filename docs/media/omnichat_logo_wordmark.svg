@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 520" width="1800" height="520">
+  <defs>
+    <linearGradient id="squircleBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#F1F5F9" />
+    </linearGradient>
+    <linearGradient id="bubbleGreen" x1="15%" y1="10%" x2="85%" y2="90%">
+      <stop offset="0%" stop-color="#569E38" />
+      <stop offset="100%" stop-color="#3B7624" />
+    </linearGradient>
+    <linearGradient id="silverW" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC" />
+      <stop offset="100%" stop-color="#CBD5E1" />
+    </linearGradient>
+    <linearGradient id="brandAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0068FF" />
+      <stop offset="100%" stop-color="#16A34A" />
+    </linearGradient>
+    <filter id="iconShadow" x="-15%" y="-15%" width="130%" height="135%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#0F172A" flood-opacity="0.14" />
+    </filter>
+  </defs>
+
+  <!-- Left Squircle Logo -->
+  <g transform="translate(50, 40)">
+    <rect x="0" y="0" width="440" height="440" rx="102" fill="url(#squircleBg)" stroke="#E2E8F0" stroke-width="4" filter="url(#iconShadow)" />
+    <g transform="translate(56, 54) scale(0.82)">
+      <path d="M 205 16 C 312 16 398 100 398 204 C 398 308 312 392 205 392 C 166 392 129 381 98 361 L 18 380 L 39 301 C 21 272 12 239 12 204 C 12 100 98 16 205 16 Z" fill="url(#bubbleGreen)" />
+      <polygon points="82,126 146,154 190,268 162,318" fill="url(#silverW)" />
+      <polygon points="178,176 205,190 232,176 205,244" fill="url(#silverW)" />
+      <polygon points="328,126 264,154 220,268 248,318" fill="url(#silverW)" />
+    </g>
+  </g>
+
+  <!-- Right Wordmark + Tagline -->
+  <g font-family="Segoe UI, Inter, -apple-system, Arial, sans-serif">
+    <text x="550" y="280" font-size="168" font-weight="900" letter-spacing="-3" fill="#0F172A">
+      Omni<tspan fill="url(#brandAccent)">Chat</tspan>
+    </text>
+    <text x="558" y="362" font-size="38" font-weight="700" fill="#475569" letter-spacing="0.4">
+      Multi-Platform Desktop Messaging Workspace
+    </text>
+  </g>
+</svg>

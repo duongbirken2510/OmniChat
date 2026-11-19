@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 1260" width="2400" height="1260">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC" />
+      <stop offset="52%" stop-color="#EFF6FF" />
+      <stop offset="100%" stop-color="#ECFDF5" />
+    </linearGradient>
+    <radialGradient id="glowBlue" cx="75%" cy="22%" r="48%">
+      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.14" />
+      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="glowGreen" cx="20%" cy="78%" r="45%">
+      <stop offset="0%" stop-color="#22C55E" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#22C55E" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="squircleBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#F1F5F9" />
+    </linearGradient>
+    <linearGradient id="bubbleGreen" x1="15%" y1="10%" x2="85%" y2="90%">
+      <stop offset="0%" stop-color="#569E38" />
+      <stop offset="100%" stop-color="#3B7624" />
+    </linearGradient>
+    <linearGradient id="silverW" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F1F5F9" />
+      <stop offset="100%" stop-color="#CBD5E1" />
+    </linearGradient>
+    <linearGradient id="brandAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0068FF" />
+      <stop offset="100%" stop-color="#16A34A" />
+    </linearGradient>
+    <filter id="cardShadow" x="-15%" y="-15%" width="135%" height="135%">
+      <feDropShadow dx="0" dy="26" stdDeviation="32" flood-color="#0F172A" flood-opacity="0.12" />
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#0F172A" flood-opacity="0.06" />
+    </filter>
+    <filter id="pillShadow" x="-10%" y="-20%" width="120%" height="150%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0F172A" flood-opacity="0.06" />
+    </filter>
+  </defs>
+
+  <!-- Studio Canvas -->
+  <rect width="2400" height="1260" fill="url(#bgGrad)" />
+  <rect width="2400" height="1260" fill="url(#glowBlue)" />
+  <rect width="2400" height="1260" fill="url(#glowGreen)" />
+
+  <!-- Subtle Architectural Grid -->
+  <g stroke="#CBD5E1" stroke-opacity="0.28" stroke-width="1">
+    <line x1="0" y1="210" x2="2400" y2="210" />
+    <line x1="0" y1="1050" x2="2400" y2="1050" />
+    <line x1="160" y1="0" x2="160" y2="1260" />
+    <line x1="2240" y1="0" x2="2240" y2="1260" />
+  </g>
+
+  <!-- LEFT: 3D Tactile Squircle App Icon + Multi-Platform Orbit Badges -->
+  <g transform="translate(210, 290)">
+    <!-- Squircle Base -->
+    <rect x="0" y="0" width="560" height="560" rx="128" fill="url(#squircleBg)" stroke="#FFFFFF" stroke-width="6" filter="url(#cardShadow)" />
+    <rect x="14" y="14" width="532" height="532" rx="116" fill="none" stroke="#E2E8F0" stroke-width="2" />
+
+    <!-- Stepwell Green Speech Bubble + Silver Geometric W -->
+    <g transform="translate(80, 76)">
+      <path d="M 205 16 C 312 16 398 100 398 204 C 398 308 312 392 205 392 C 166 392 129 381 98 361 L 18 380 L 39 301 C 21 272 12 239 12 204 C 12 100 98 16 205 16 Z" fill="url(#bubbleGreen)" />
+      <!-- Left Wing of W -->
+      <polygon points="82,126 146,154 190,268 162,318" fill="url(#silverW)" />
+      <!-- Center Chevron of W -->
+      <polygon points="178,176 205,190 232,176 205,244" fill="url(#silverW)" />
+      <!-- Right Wing of W -->
+      <polygon points="328,126 264,154 220,268 248,318" fill="url(#silverW)" />
+    </g>
+
+    <!-- Orbiting Platform Pills -->
+    <g filter="url(#pillShadow)" font-family="Segoe UI, Inter, -apple-system, Arial, sans-serif" font-weight="800" fill="#FFFFFF" text-anchor="middle">
+      <circle cx="48" cy="64" r="38" fill="#0068FF" stroke="#FFFFFF" stroke-width="5" />
+      <text x="48" y="75" font-size="28">Z</text>
+
+      <circle cx="516" cy="64" r="38" fill="#9333EA" stroke="#FFFFFF" stroke-width="5" />
+      <text x="516" y="75" font-size="26">M</text>
+
+      <circle cx="548" cy="280" r="38" fill="#38BDF8" stroke="#FFFFFF" stroke-width="5" />
+      <text x="548" y="290" font-size="24">Tg</text>
+
+      <circle cx="516" cy="496" r="38" fill="#F97316" stroke="#FFFFFF" stroke-width="5" />
+      <text x="516" y="507" font-size="26">S</text>
+
+      <circle cx="48" cy="496" r="38" fill="#16A34A" stroke="#FFFFFF" stroke-width="5" />
+      <text x="48" y="507" font-size="26">W</text>
+
+      <circle cx="-20" cy="280" r="38" fill="#0F172A" stroke="#FFFFFF" stroke-width="5" />
+      <text x="-20" y="290" font-size="26">T</text>
+    </g>
+  </g>
+
+  <!-- RIGHT: Brand Typography + Bilingual Tagline + 4 Feature Pills -->
+  <g font-family="Segoe UI, Inter, -apple-system, Arial, sans-serif">
+    <!-- Version Release Pill -->
+    <g transform="translate(860, 265)" filter="url(#pillShadow)">
+      <rect x="0" y="0" width="440" height="54" rx="27" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="2" />
+      <text x="220" y="35" text-anchor="middle" font-size="22" font-weight="700" fill="#1D4ED8">
+        DESKTOP WORKSPACE • v1.8.2 (EN / VI)
+      </text>
+    </g>
+
+    <!-- Two-Tone Wordmark -->
+    <text x="855" y="458" font-size="152" font-weight="900" letter-spacing="-3" fill="#0F172A">
+      Omni<tspan fill="url(#brandAccent)">Chat</tspan>
+    </text>
+
+    <!-- English & Vietnamese Subtitles -->
+    <text x="860" y="535" font-size="36" font-weight="700" fill="#1E293B">
+      All-in-One Multi-Platform Messaging Desktop Workspace
+    </text>
+    <text x="860" y="590" font-size="30" font-weight="500" fill="#475569">
+      Hợp nhất đa tài khoản Zalo • Messenger • Fanpage • WhatsApp • Telegram • Shopee • TikTok
+    </text>
+
+    <!-- 4 Core Feature Pills (2x2 Grid, generous width = 620px >= 285px, centered labels) -->
+    <g transform="translate(860, 655)" filter="url(#pillShadow)">
+      <!-- Pill 1 -->
+      <rect x="0" y="0" width="620" height="82" rx="20" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" />
+      <text x="310" y="50" text-anchor="middle" font-size="26" font-weight="700" fill="#0F172A">
+        🛡️ Isolated Multi-Account Partitions
+      </text>
+
+      <!-- Pill 2 -->
+      <rect x="650" y="0" width="620" height="82" rx="20" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" />
+      <text x="960" y="50" text-anchor="middle" font-size="26" font-weight="700" fill="#0F172A">
+        ⚡ \Quick Replies + 6 Auto-Pasted Images
+      </text>
+
+      <!-- Pill 3 -->
+      <rect x="0" y="106" width="620" height="82" rx="20" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" />
+      <text x="310" y="156" text-anchor="middle" font-size="26" font-weight="700" fill="#0F172A">
+        💾 Portable Storage &amp; Zero Drive-C Bloat
+      </text>
+
+      <!-- Pill 4 -->
+      <rect x="650" y="106" width="620" height="82" rx="20" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" />
+      <text x="960" y="156" text-anchor="middle" font-size="26" font-weight="700" fill="#0F172A">
+        🌐 Bilingual Interface (English &amp; Tiếng Việt)
+      </text>
+    </g>
+  </g>
+
+  <!-- Footer Attribution -->
+  <text x="1200" y="1145" text-anchor="middle" font-family="Segoe UI, Inter, -apple-system, Arial, sans-serif" font-size="26" font-weight="600" fill="#64748B" letter-spacing="0.5">
+    Designed by Duong Birken • duongbirken.deta.vn • github.com/duongbirken2510/OmniChat
+  </text>
+</svg>
