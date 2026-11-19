@@ -3,7 +3,18 @@ import { ref } from 'vue'
 import { useI18n } from '../i18n'
 
 const { t } = useI18n()
-const CURRENT_VERSION = 1.81 // Số phiên bản hiện hành
+const CURRENT_VERSION = '1.8.2' // Số phiên bản hiện hành
+
+const isNewerVersion = (remote: string, current: string): boolean => {
+  const r = String(remote || '').replace(/^v/i, '').split('.').map(n => parseInt(n, 10) || 0)
+  const c = String(current || '').replace(/^v/i, '').split('.').map(n => parseInt(n, 10) || 0)
+  const len = Math.max(r.length, c.length)
+  for (let i = 0; i < len; i++) {
+    if ((r[i] || 0) > (c[i] || 0)) return true
+    if ((r[i] || 0) < (c[i] || 0)) return false
+  }
+  return false
+}
 
 const hasUpdate = ref(false)
 const updateInfo = ref({
@@ -26,12 +37,11 @@ const checkForUpdate = async () => {
   noUpdateFound.value = false
   emit('update:isChecking', true)
   try {
-    const response = await fetch('https://gitlab.com/stepwellvietnam/chatportal/-/raw/main/version.json', { cache: 'no-store' })
+    const response = await fetch('https://raw.githubusercontent.com/duongbirken2510/OmniChat/main/version.json', { cache: 'no-store' })
     if (response.ok) {
       const data = await response.json()
-      const remoteVersion = parseFloat(data.version)
       
-      if (remoteVersion > CURRENT_VERSION) {
+      if (isNewerVersion(data.version, CURRENT_VERSION)) {
         updateInfo.value = data
         hasUpdate.value = true
         isDismissed.value = false

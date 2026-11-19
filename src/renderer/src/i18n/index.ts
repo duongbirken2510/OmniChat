@@ -39,7 +39,7 @@ export const translations = {
     updateBanner: {
       newVersionTitle: (ver: string) => `Đã có OmniChat bản mới — v${ver}`,
       dismissTooltip: 'Bỏ qua nhắc nhở',
-      upToDate: '✅ Ứng dụng đang ở phiên bản mới nhất (V1.8.1)'
+      upToDate: '✅ Ứng dụng đang ở phiên bản mới nhất (V1.8.2)'
     },
     // Settings Modal
     settings: {
@@ -162,7 +162,7 @@ export const translations = {
     updateBanner: {
       newVersionTitle: (ver: string) => `New OmniChat version available — v${ver}`,
       dismissTooltip: 'Dismiss reminder',
-      upToDate: '✅ Application is up to date (V1.8.1)'
+      upToDate: '✅ Application is up to date (V1.8.2)'
     },
     // Settings Modal
     settings: {

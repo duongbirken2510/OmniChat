@@ -14,6 +14,13 @@
 
 **OmniChat** is a lightweight, high-performance desktop application built with **Electron**, **Vue 3**, and **TypeScript**. Designed for sales, telesales, e-commerce sellers, and customer support teams, OmniChat unifies multiple accounts across **7 messaging & marketplace platforms** into a single workspace with strict session isolation and instant quick-reply tools.
 
+### 📥 Download Official Installer (Latest: `v1.8.2`)
+
+| Operating System | Architecture | Installer Package | Size | Direct Download |
+| :--- | :---: | :--- | :---: | :---: |
+| **Windows 10 / 11** | `x64` (64-bit) | `OmniChat_V1.8.2_Setup.exe` | **78.9 MB** | [**⬇️ Download `.exe`**](https://github.com/duongbirken2510/OmniChat/releases/download/v1.8.2/OmniChat_V1.8.2_Setup.exe) |
+| **All Releases** | — | GitHub Releases Page | — | [View Release Notes](https://github.com/duongbirken2510/OmniChat/releases/latest) |
+
 ### 🌐 Supported Platforms
 
 | Platform | Multi-Account | Special Capabilities |
@@ -92,6 +99,13 @@ pnpm run build:unpack
 ## 🇻🇳 Tiếng Việt
 
 **OmniChat** là ứng dụng Desktop đa nền tảng gọn nhẹ, hiệu năng cao được xây dựng trên **Electron**, **Vue 3** và **TypeScript**. Được thiết kế chuyên biệt cho đội ngũ Kinh doanh, Telesale, Nhà bán hàng TMĐT và Chăm sóc Khách hàng (CSKH), OmniChat giúp vận hành đồng thời nhiều tài khoản trên **7 nền tảng nhắn tin & sàn thương mại điện tử** ngay trong một cửa sổ duy nhất.
+
+### 📥 Tải Bộ Cài Đặt Chính Thức (Mới nhất: `v1.8.2`)
+
+| Hệ điều hành | Kiến trúc | Tên tệp cài đặt | Dung lượng | Liên kết tải trực tiếp |
+| :--- | :---: | :--- | :---: | :---: |
+| **Windows 10 / 11** | `x64` (64-bit) | `OmniChat_V1.8.2_Setup.exe` | **78.9 MB** | [**⬇️ Tải bộ cài `.exe`**](https://github.com/duongbirken2510/OmniChat/releases/download/v1.8.2/OmniChat_V1.8.2_Setup.exe) |
+| **Tất cả phiên bản** | — | Trang GitHub Releases | — | [Xem chi tiết bản phát hành](https://github.com/duongbirken2510/OmniChat/releases/latest) |
 
 ### 🌐 Các Nền Tảng Hỗ Trợ
 

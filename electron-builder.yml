@@ -12,17 +12,19 @@ files:
   - '!{.eslintcache,eslint.config.mjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml,package-lock.json}'
   - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
-  - '!{prd_stepwell_omnichat.md,History.md,.editorconfig,.gitignore}'
+  - '!{prd_stepwell_omnichat.md,History.md,RELEASE_NOTES.md,.editorconfig,.gitignore}'
   - '!{restart.bat,start.command,version.json,Stepwell_Chat_icon.png}'
   - '!pnpm-workspace.yaml'
   - '!build/create-ico.js'
 asarUnpack:
   - resources/**
+compression: maximum
 win:
   executableName: StepwellOmniChat
   icon: build/icon.ico
+  verifyUpdateCodeSignature: false
 nsis:
-  artifactName: OmniChat_V1.7.${ext}
+  artifactName: OmniChat_V${version}_Setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
   createDesktopShortcut: always
@@ -35,7 +37,7 @@ mac:
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
   notarize: false
 dmg:
-  artifactName: OmniChat_V1.7.${ext}
+  artifactName: OmniChat_V${version}.${ext}
 linux:
   target:
     - AppImage

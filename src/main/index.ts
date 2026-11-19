@@ -165,7 +165,7 @@ function createWindow(): void {
     minHeight: 600,
     show: false,
     autoHideMenuBar: true,
-    title: 'Stepwell OmniChat - V1.8.1',
+    title: 'Stepwell OmniChat - V1.8.2',
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -583,7 +583,7 @@ app.whenReady().then(() => {
   // ===== IPC: Kiểm tra cập nhật từ Main Process (tránh CORS) =====
   ipcMain.handle('check-for-update', async () => {
     try {
-      const response = await net.fetch('https://gitlab.com/stepwellvietnam/chatportal/-/raw/main/version.json', { cache: 'no-store' })
+      const response = await net.fetch('https://raw.githubusercontent.com/duongbirken2510/OmniChat/main/version.json', { cache: 'no-store' })
       if (response.ok) {
         const data = await response.json()
         return { success: true, data }

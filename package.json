@@ -1,16 +1,10 @@
 {
   "name": "omnichat",
-  "version": "1.8.1",
-  "description": "An Electron application with Vue and TypeScript",
+  "version": "1.8.2",
+  "description": "All-in-One Multi-Platform Messaging Desktop Workspace (Zalo, Messenger, Fanpage, WhatsApp, Telegram, Shopee, TikTok)",
   "main": "./out/main/index.js",
-  "author": "example.com",
-  "homepage": "https://electron-vite.org",
-  "build": {
-    "win": {
-      "verifyUpdateCodeSignature": false,
-      "signAndEditExecutable": false
-    }
-  },
+  "author": "Duong Birken <duongbirken@gmail.com>",
+  "homepage": "https://github.com/duongbirken2510/OmniChat",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",

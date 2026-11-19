@@ -154,17 +154,27 @@ const handleOpenSellerCenter = (acc: Account) => {
 }
 
 // ===== UPDATE CHECK (inline trong modal) =====
-const CURRENT_VERSION = 1.81
+const CURRENT_VERSION = '1.8.2'
 const updateCheckState = ref<'idle' | 'checking' | 'up-to-date' | 'has-update' | 'error'>('idle')
 const updateData = ref({ version: '', mac_url: '', win_url: '', changelog: '' })
+
+const isNewerVersion = (remote: string, current: string): boolean => {
+  const r = String(remote || '').replace(/^v/i, '').split('.').map(n => parseInt(n, 10) || 0)
+  const c = String(current || '').replace(/^v/i, '').split('.').map(n => parseInt(n, 10) || 0)
+  const len = Math.max(r.length, c.length)
+  for (let i = 0; i < len; i++) {
+    if ((r[i] || 0) > (c[i] || 0)) return true
+    if ((r[i] || 0) < (c[i] || 0)) return false
+  }
+  return false
+}
 
 const handleCheckUpdate = async () => {
   updateCheckState.value = 'checking'
   try {
     const result = await window.api.checkForUpdate()
     if (result.success && result.data) {
-      const remoteVersion = parseFloat(result.data.version)
-      if (remoteVersion > CURRENT_VERSION) {
+      if (isNewerVersion(result.data.version, CURRENT_VERSION)) {
         updateData.value = result.data
         updateCheckState.value = 'has-update'
       } else {
@@ -640,7 +650,7 @@ const handleRemoveSnippetImage = (index: number) => {
                 <div class="flex items-center justify-between gap-4">
                   <div>
                     <p class="text-sm font-semibold text-gray-700">{{ t.settings.system.versionTitle }}</p>
-                    <p class="text-xs text-gray-400 mt-0.5">{{ t.settings.system.versionDescPrefix }} <span class="font-bold text-gray-600">V1.8.1</span></p>
+                    <p class="text-xs text-gray-400 mt-0.5">{{ t.settings.system.versionDescPrefix }} <span class="font-bold text-gray-600">V1.8.2</span></p>
                   </div>
                   <button
                     @click="handleCheckUpdate"
