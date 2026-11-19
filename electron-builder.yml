@@ -30,24 +30,31 @@ nsis:
   uninstallDisplayName: ${productName}
   createDesktopShortcut: always
 mac:
+  executableName: StepwellOmniChat
+  icon: build/icon.png
+  target:
+    - dmg
   entitlementsInherit: build/entitlements.mac.plist
   extendInfo:
-    - NSCameraUsageDescription: Application requests access to the device's camera.
-    - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
-    - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
-    - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
+    NSCameraUsageDescription: Application requests access to the device's camera.
+    NSMicrophoneUsageDescription: Application requests access to the device's microphone.
+    NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
+    NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
   notarize: false
 dmg:
   artifactName: OmniChat_V${version}.${ext}
 linux:
+  executableName: stepwell-omnichat
+  icon: build/icon.png
   target:
     - AppImage
-    - snap
     - deb
-  maintainer: electronjs.org
-  category: Utility
+  maintainer: Duong Birken <duongbirken@gmail.com>
+  category: Network
+deb:
+  artifactName: OmniChat_V${version}_amd64.${ext}
 appImage:
-  artifactName: ${name}-${version}.${ext}
+  artifactName: OmniChat_V${version}.${ext}
 npmRebuild: false
 publish:
   provider: generic
